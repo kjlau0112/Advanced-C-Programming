@@ -43,15 +43,6 @@ class Matrix
 		{
 			return cells[r*NCols +c];
 		}
-		void Show()
-		{
-			for(int r=0; r<NRows;r++)
-			{
-				for(int c=0; c<NCols;c++) cout<<Cell(r,c)<<'\t';
-				cout<<endl;
-				
-			}
-		}
 		
 		Matrix operator* (const Matrix& rhs)const 
 		{
@@ -72,9 +63,9 @@ class Matrix
 			return Matrix(NRows,rhs.NCols,cs);
 		}
 			 Matrix operator+(const Matrix& rhs)const{
-            if(NCols != rhs.NRows) throw "Cannot Add lahh...";
-            if(NRows != rhs.NCols) throw "Cannot Add lahh...";
-            int* cs=new int[NRows*NCols]; // lhs Row, rhs Col
+	        if(NCols != rhs.NRows) throw "Cannot Add lahh...";
+	        if(NRows != rhs.NCols) throw "Cannot Add lahh...";
+	        int* cs=new int[NRows*NCols]; // lhs Row, rhs Col
             for (int r=0; r<NRows; r++){
                 for (int c=0; c<NCols;c++){
                         cs[r*NCols+c] = Cell(r,c) + rhs.Cell(r,c);
@@ -93,7 +84,33 @@ class Matrix
         }
         return Matrix(NCols, NRows, cs); // Returning a new matrix, i.e. instantiation
     }
+    friend ostream& operator<<(ostream& os, const Matrix &m);
+	
+	Matrix operator = (const Matrix &rhs)
+	{
+		delete [] cells;
+		NRows =rhs.NRows;
+		NCols= rhs.NCols;
+		cells = new int[NRows*NCols];
+		memcpy(cells,rhs.cells,NRows*NCols*sizeof(int));
+		return *this;
+	}
+
 };
+
+ostream &operator <<(ostream& os, const Matrix &m)
+{
+	// Tale mote that t
+	for(int r =0; r<m.NRows;r++)
+	{
+		for(int c=0; c<m.NCols;c++)
+		{
+			os<<m.cells[r*m.NCols+c]<<'\t';
+		}
+		os<<endl;
+	}
+	return os;
+}
 
 void _ShowMatrix(int nR,int nC,int *m)
 {
@@ -115,10 +132,9 @@ main()
 		5,6);
 
 	
-	Matrix mB(3,2,
-              2,1,
-              9,6,
-              0,8);
+	Matrix mB(2,2,
+              1,2,
+              3,4);
 		
 	Matrix mC(3,3,
               1,5,0,
@@ -128,7 +144,16 @@ main()
 
 	try
 	{
-		((mA* ~mB)+mC).Show();
+//		Matrix mC =mA*mB;
+//		cout<<mA;
+//		operator<<(cout,mA);
+		cout<<"mB"<<endl;
+		cout<<mB;
+		cout<<" old mA ="<<endl;
+		operator<<(cout,mA);
+		mA = mB;
+		cout<<" New mA ="<<endl;
+		cout<<mA<<endl;
 	}
 
 

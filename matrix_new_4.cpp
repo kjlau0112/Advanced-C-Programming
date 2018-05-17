@@ -43,15 +43,16 @@ class Matrix
 		{
 			return cells[r*NCols +c];
 		}
-		void Show()
-		{
-			for(int r=0; r<NRows;r++)
-			{
-				for(int c=0; c<NCols;c++) cout<<Cell(r,c)<<'\t';
-				cout<<endl;
-				
-			}
-		}
+//		void Show()
+//		{
+//			for(int r=0; r<NRows;r++)
+//			{
+//				for(int c=0; c<NCols;c++) cout<<Cell(r,c)<<'\t';
+//				cout<<endl;
+//				
+//			}
+//		}
+
 		
 		Matrix operator* (const Matrix& rhs)const 
 		{
@@ -93,7 +94,23 @@ class Matrix
         }
         return Matrix(NCols, NRows, cs); // Returning a new matrix, i.e. instantiation
     }
+    friend ostream& operator<<(ostream& os, const Matrix &m);
+	
+
 };
+
+ostream &operator <<(ostream& os, const Matrix &m)
+{
+	for(int r =0; r<m.NRows;r++)
+	{
+		for(int c=0; c<m.NCols;c++)
+		{
+			os<<m.cells[r*m.NCols+c]<<'\t';
+		}
+		os<<endl;
+	}
+	return os;
+}
 
 void _ShowMatrix(int nR,int nC,int *m)
 {
@@ -115,10 +132,9 @@ main()
 		5,6);
 
 	
-	Matrix mB(3,2,
-              2,1,
-              9,6,
-              0,8);
+	Matrix mB(2,2,
+              1,2,
+              3,4);
 		
 	Matrix mC(3,3,
               1,5,0,
@@ -128,7 +144,14 @@ main()
 
 	try
 	{
-		((mA* ~mB)+mC).Show();
+		Matrix mC =mA*mB;
+	//	cout<<endl;
+	cout<<mA;
+		//operator<<(cout,mA);
+		cout<<"   x"<<endl;
+		cout<<mB;
+		cout<<"   ="<<endl;
+		cout<<mC;
 	}
 
 
